@@ -1,19 +1,41 @@
+<script setup>
+import { ref } from 'vue';
+import contacts from './contacts.json'
+
+const topContacts = ref(contacts.slice(0,5))
+</script>
+
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + Vite" />
+  <h1>Iron Contacts</h1>
+  <table>
+    <thead>
+      <th>Picture</th>
+      <th>Name</th>
+      <th>Popularity</th>
+    </thead>
+
+    <tr v-for="contact in topContacts" :key="contact.id">
+      <td>
+        <img :src="contact.pictureUrl">
+      </td>
+
+      <td>{{ contact.name }}</td>
+
+      <td>{{ contact.popularity.toFixed(2) }}</td>
+    </tr>
+    
+    
+  </table>
 </template>
 
-<script setup>
-import HelloWorld from './components/HelloWorld.vue';
-</script>
+
 
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+}
+
+img {
+  width: 50px;
 }
 </style>
