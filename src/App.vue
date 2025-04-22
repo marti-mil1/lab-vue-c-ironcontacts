@@ -20,11 +20,25 @@ const addContact = () => {
   topContacts.value.unshift(randomContact);
 }
 
+const sortByPopularity = () => {
+  topContacts.value.sort((a, b) => b.popularity - a.popularity)
+}
+
+const sortByName = () => {
+  topContacts.value.sort((a, b) => a.name.localeCompare(b.name))
+}
+
 </script>
 
 <template>
   <h1>Iron Contacts</h1>
-  <button ref="addBUtton" @click="addContact">ADD RANDOM CONTACT</button>
+
+  <div class="buttons-container">
+    <button ref="addBUtton" @click="addContact">Add Random Contact</button>
+    <button @click="sortByPopularity">Sort By Popularity</button>
+    <button @click="sortByName">Sort By Name</button>
+  </div>
+ 
   <table>
     <thead>
       <th>Picture</th>
@@ -73,6 +87,7 @@ const addContact = () => {
 
 body {
   width: 100%;
+  min-width: 500px
 }
 
 #app {
@@ -82,12 +97,31 @@ body {
 h1 {
   text-align: center;
 }
+.buttons-container {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 20px auto 40px
+}
 
 button {
   text-align: center;
-  width: 250px;
-  margin: 20px calc((100vw - 250px)/2) 40px;
+  min-width: 150px;
+  height: 30px;
   padding: 5px
+}
+
+button:hover {
+  background-color: rgb(166, 161, 161);
+  border: none;
+  color: white
+}
+
+table {
+  margin: 0 auto;
 }
 
 .portrait {
