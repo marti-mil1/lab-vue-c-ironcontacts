@@ -3,15 +3,15 @@ import { ref } from 'vue';
 import contacts from './contacts.json'
 import trophy from './assets/trophy.png'
 
-const topContacts = ref(contacts.slice(0, 5))
+const topContacts = ref(contacts.slice(0, 45))
 
-const addBUtton= ref(null);
+const addButton= ref(null);
 
 const addContact = () => {
   const existingContacts = new Set(topContacts.value.map(contact => contact.id));
   const remainingContacts = contacts.filter(contact => !existingContacts.has(contact.id));
   if (remainingContacts.length === 0) {
-    addBUtton.value.innerHTML = 'SORRY, NO MORE CONTACTS LEFT';
+    addButton.value.innerHTML = 'SORRY, NO MORE CONTACTS LEFT';
     return
   };
   const randomIndex = Math.floor(Math.random()* remainingContacts.length);
@@ -29,9 +29,12 @@ const sortByName = () => {
 }
 
 const deleteContact = (id) => {
-  topContacts.value = topContacts.value.filter((contact) => contact.id !== id)
+  topContacts.value = topContacts.value.filter((contact) => contact.id !== id);
+  if (topContacts.value.length > 0) {
+    addButton.value.innerHTML = "Add Random Contact";
+    return
+  }
 }
-
 
 
 </script>
@@ -40,9 +43,9 @@ const deleteContact = (id) => {
   <h1>Iron Contacts</h1>
 
   <div class="buttons-container">
-    <button ref="addBUtton" @click="addContact">Add Random Contact</button>
-    <button @click="sortByPopularity">Sort By Popularity</button>
-    <button @click="sortByName">Sort By Name</button>
+    <button ref="addButton" @click="addContact" class="addButton">Add Random Contact</button>
+    <button @click="sortByPopularity" class="sortButton">Sort By Popularity</button>
+    <button @click="sortByName" class="nameButton">Sort By Name</button>
   </div>
  
   <table>
@@ -87,7 +90,7 @@ const deleteContact = (id) => {
 
       <!-- Actions -->
       <td>
-        <button @click="deleteContact(contact.id)">Delete</button>
+        <button class="deleteButton" @click="deleteContact(contact.id)">Delete</button>
       </td>
     </tr>
 
@@ -106,6 +109,7 @@ const deleteContact = (id) => {
 
 
 html, body {
+  background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
   width: 100%;
   min-width: 450px;
 }
@@ -116,7 +120,13 @@ html, body {
 
 h1 {
   text-align: center;
+  
 }
+
+h1, th, td {
+  color: #1A2980
+}
+
 .buttons-container {
   width: auto;
   height: auto;
@@ -127,18 +137,49 @@ h1 {
   margin: 20px auto 40px
 }
 
-button {
+.addButton, .sortButton, .nameButton {
+  background-image: linear-gradient(to right, #1A2980 0%, #26D0CE  51%, #1A2980  100%);
   text-align: center;
-  min-width: 120px;
+  min-width: 140px;
   height: 30px;
-  padding: 5px
+  padding: 5px;
+  border-radius: 12px;
+  border: none;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;            
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
 }
 
-button:hover {
-  background-color: rgb(166, 161, 161);
-  border: none;
-  color: white
+.addButton:hover, .sortButton:hover, .nameButton:hover {
+  background-position: right center; 
+  color: #fff;
+  text-decoration: none;
+
 }
+
+.deleteButton {
+  text-align: center;
+  min-width: 100px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 50px;
+  border: none;
+  background-image: linear-gradient(to right, #e52d27 0%, #b31217  51%, #e52d27  100%);
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;            
+  box-shadow: 0 0 20px #eee;
+  display: block;
+}
+
+.deleteButton:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}         
 
 table {
   width: auto;
@@ -147,6 +188,7 @@ table {
 
 .portrait {
   width: 50px;
+  border-radius: 5px
 }
 
 th, td {
