@@ -28,6 +28,12 @@ const sortByName = () => {
   topContacts.value.sort((a, b) => a.name.localeCompare(b.name))
 }
 
+const deleteContact = (id) => {
+  topContacts.value = topContacts.value.filter((contact) => contact.id !== id)
+}
+
+
+
 </script>
 
 <template>
@@ -46,6 +52,7 @@ const sortByName = () => {
       <th>Popularity</th>
       <th>Won Oscar</th>
       <th>Won Emmy</th>
+      <th>Actions</th>
     </thead>
 
     <tr v-for="contact in topContacts" :key="contact.id">
@@ -65,13 +72,25 @@ const sortByName = () => {
         <img class="trophy" :src="trophy">
       </td>
 
+      <td v-else>
+        <p></p>
+      </td>
+
       <!-- Won Emmy -->
       <td v-if="contact.wonEmmy === true">
         <img class="trophy" :src="trophy">
       </td>
+
+      <td v-else>
+        <p></p>
+      </td>
+
+      <!-- Actions -->
+      <td>
+        <button @click="deleteContact(contact.id)">Delete</button>
+      </td>
     </tr>
 
-    
     
   </table>
 </template>
@@ -85,9 +104,10 @@ const sortByName = () => {
   box-sizing: border-box;
 }
 
-body {
+
+html, body {
   width: 100%;
-  min-width: 500px
+  min-width: 450px;
 }
 
 #app {
@@ -98,7 +118,7 @@ h1 {
   text-align: center;
 }
 .buttons-container {
-  width: 100%;
+  width: auto;
   height: auto;
   display: flex;
   justify-content: center;
@@ -109,7 +129,7 @@ h1 {
 
 button {
   text-align: center;
-  min-width: 150px;
+  min-width: 120px;
   height: 30px;
   padding: 5px
 }
@@ -121,6 +141,7 @@ button:hover {
 }
 
 table {
+  width: auto;
   margin: 0 auto;
 }
 
