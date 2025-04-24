@@ -3,15 +3,15 @@ import { ref } from 'vue';
 import contacts from './contacts.json'
 import trophy from './assets/trophy.png'
 
-const topContacts = ref(contacts.slice(0, 45))
+const topContacts = ref(contacts.slice(0, 5))
 
-const addButton= ref(null);
+const addButtonText= ref('Add Random Contact');
 
 const addContact = () => {
   const existingContacts = new Set(topContacts.value.map(contact => contact.id));
   const remainingContacts = contacts.filter(contact => !existingContacts.has(contact.id));
-  if (remainingContacts.length === 0) {
-    addButton.value.innerHTML = 'SORRY, NO MORE CONTACTS LEFT';
+  if (remainingContacts.length === 1) {
+    addButtonText.value = 'SORRY, NO MORE CONTACTS LEFT';
     return
   };
   const randomIndex = Math.floor(Math.random()* remainingContacts.length);
@@ -31,7 +31,7 @@ const sortByName = () => {
 const deleteContact = (id) => {
   topContacts.value = topContacts.value.filter((contact) => contact.id !== id);
   if (topContacts.value.length > 0) {
-    addButton.value.innerHTML = "Add Random Contact";
+    addButtonText.value = "Add Random Contact";
     return
   }
 }
@@ -43,7 +43,7 @@ const deleteContact = (id) => {
   <h1>Iron Contacts</h1>
 
   <div class="buttons-container">
-    <button ref="addButton" @click="addContact" class="addButton">Add Random Contact</button>
+    <button ref="addButton" @click="addContact" class="addButton">{{ addButtonText }}</button>
     <button @click="sortByPopularity" class="sortButton">Sort By Popularity</button>
     <button @click="sortByName" class="nameButton">Sort By Name</button>
   </div>
@@ -109,7 +109,7 @@ const deleteContact = (id) => {
 
 
 html, body {
-  background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+  background: linear-gradient(90deg, #C7D7F0 0%, #FAF8C8 100%);
   width: 100%;
   min-width: 450px;
 }
@@ -120,6 +120,7 @@ html, body {
 
 h1 {
   text-align: center;
+  margin-top: 10px
   
 }
 
@@ -138,18 +139,17 @@ h1, th, td {
 }
 
 .addButton, .sortButton, .nameButton {
-  background-image: linear-gradient(to right, #1A2980 0%, #26D0CE  51%, #1A2980  100%);
+  background-image: linear-gradient(to right, #115b89 0%, #76e3e2  51%, #1A2980  100%);
   text-align: center;
   min-width: 140px;
   height: 30px;
   padding: 5px;
-  border-radius: 12px;
+  border-radius: 2px;
   border: none;
   transition: 0.5s;
   background-size: 200% auto;
   color: white;            
   box-shadow: 0 0 20px #eee;
-  border-radius: 10px;
   display: block;
 }
 
@@ -167,7 +167,7 @@ h1, th, td {
   padding: 5px;
   border-radius: 50px;
   border: none;
-  background-image: linear-gradient(to right, #e52d27 0%, #b31217  51%, #e52d27  100%);
+  background-image: linear-gradient(to right, #f6ad54 0%, #f8232a  51%, #f65954  100%);
   transition: 0.5s;
   background-size: 200% auto;
   color: white;            
@@ -197,6 +197,7 @@ th, td {
 }
 
 .trophy {
-  width: 35px
+  width: 35px;
+  border-radius: 5px 5px 10px 10px
 }
 </style>
