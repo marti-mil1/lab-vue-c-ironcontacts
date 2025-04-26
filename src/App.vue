@@ -1,40 +1,16 @@
 <script setup>
-import { ref } from 'vue';
-import contacts from './contacts.json'
-import trophy from './assets/trophy.png'
+import { storeToRefs } from 'pinia';
+import { useIronContactsStore } from './stores/ironcontacts'
 
-const topContacts = ref(contacts.slice(0, 5))
+const store = useIronContactsStore()
 
-const addButtonText= ref('Add Random Contact');
-
-const addContact = () => {
-  const existingContacts = new Set(topContacts.value.map(contact => contact.id));
-  const remainingContacts = contacts.filter(contact => !existingContacts.has(contact.id));
-  if (remainingContacts.length === 1) {
-    addButtonText.value = 'SORRY, NO MORE CONTACTS LEFT';
-    return
-  };
-  const randomIndex = Math.floor(Math.random()* remainingContacts.length);
-  const randomContact = remainingContacts[randomIndex];
-
-  topContacts.value.unshift(randomContact);
-}
-
-const sortByPopularity = () => {
-  topContacts.value.sort((a, b) => b.popularity - a.popularity)
-}
-
-const sortByName = () => {
-  topContacts.value.sort((a, b) => a.name.localeCompare(b.name))
-}
-
-const deleteContact = (id) => {
-  topContacts.value = topContacts.value.filter((contact) => contact.id !== id);
-  if (topContacts.value.length > 0) {
-    addButtonText.value = "Add Random Contact";
-    return
-  }
-}
+const { topContacts, addButtonText } = storeToRefs(store)
+const { 
+  addContact,
+  sortByPopularity,
+  sortByName,
+  deleteContact
+} = store
 
 
 </script>
@@ -72,7 +48,7 @@ const deleteContact = (id) => {
 
       <!-- Won Oscar -->
       <td v-if="contact.wonOscar === true">
-        <img class="trophy" :src="trophy">
+        <img class="trophy" src="./assets/trophy.png">
       </td>
 
       <td v-else>
@@ -81,7 +57,7 @@ const deleteContact = (id) => {
 
       <!-- Won Emmy -->
       <td v-if="contact.wonEmmy === true">
-        <img class="trophy" :src="trophy">
+        <img class="trophy" src="./assets/trophy.png">
       </td>
 
       <td v-else>
@@ -197,7 +173,6 @@ th, td {
 }
 
 .trophy {
-  width: 35px;
-  border-radius: 5px 5px 10px 10px
+  width: 35px
 }
 </style>
